@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum PartialModalStyle {
+public enum PartialModalStyle {
     /// Presents from the bottom of the presenting view up to the specified percent of parent view.
     case fromBottom(percent: CGFloat)
     /// Presents the modal in the center of the presenting view using the specified percentage of the parent view size.
@@ -18,15 +18,15 @@ enum PartialModalStyle {
 private let DefaultPartialModalStyle: PartialModalStyle = .fromBottom(percent: 0.7)
 private let DefaultMaximizedPartialModalStyle: PartialModalStyle = .fromBottom(percent: 0.95)
 
-class PartialModalPresentationController: UIPresentationController {
-    weak var presentationDelegate: PartialModalPresentationDelegate?
+public class PartialModalPresentationController: UIPresentationController {
+    public weak var presentationDelegate: PartialModalPresentationDelegate?
     /// The style of the presenting view when unmaximized (normal). Defaults to `fromBottom(0.7)`.
-    var modalStyle: PartialModalStyle = DefaultPartialModalStyle
+    public var modalStyle: PartialModalStyle = DefaultPartialModalStyle
     /// The style of the presenting view when maximized. Defaults to `fromBottom(0.95)`.
-    var maximizedModalStyle: PartialModalStyle = DefaultMaximizedPartialModalStyle
-    var blurEnabled = false
-    var maximized = false
-    var blurEffect = UIBlurEffect(style: .dark)
+    public var maximizedModalStyle: PartialModalStyle = DefaultMaximizedPartialModalStyle
+    public var blurEnabled = false
+    public var maximized = false
+    public var blurEffect = UIBlurEffect(style: .dark)
     /// The active modal style, based on the un/maximized state
     private var activeModalStyle: PartialModalStyle {
         return (maximized ? maximizedModalStyle : modalStyle)
@@ -65,7 +65,7 @@ class PartialModalPresentationController: UIPresentationController {
         }
         
         let pView = presentedViewController.view!
-        pView.layer.cornerRadius = Theme.General.CornerRadius
+        pView.layer.cornerRadius = 10
         if case PartialModalStyle.fromBottom(_) = activeModalStyle {
             // only round the top corners
             pView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
@@ -124,7 +124,7 @@ class PartialModalPresentationController: UIPresentationController {
         presentationDelegate?.partialModalPresentationDimViewTapped(controller: self)
     }
     
-    func maximizeViewController() {
+    public func maximizeViewController() {
         maximized = true
         
         UIView.animate(withDuration: 0.15, delay: 0, options: .curveEaseOut, animations: {
@@ -132,7 +132,7 @@ class PartialModalPresentationController: UIPresentationController {
         }, completion: nil)
     }
     
-    func unmaximizeViewController() {
+    public func unmaximizeViewController() {
         maximized = false
         
         UIView.animate(withDuration: 0.15, delay: 0, options: .curveEaseIn, animations: {
