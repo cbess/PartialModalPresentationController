@@ -51,11 +51,11 @@ public class PartialModalPresentationController: UIPresentationController {
         return dView
     })()
     
-    override var frameOfPresentedViewInContainerView: CGRect {
+    public override var frameOfPresentedViewInContainerView: CGRect {
         return frameFromSize(containerView!.bounds.size, style: activeModalStyle)
     }
     
-    override func presentationTransitionWillBegin() {
+    public override func presentationTransitionWillBegin() {
         let cView = containerView!
         cView.addSubview(dimView)
         
@@ -86,13 +86,13 @@ public class PartialModalPresentationController: UIPresentationController {
         }
     }
     
-    override func presentationTransitionDidEnd(_ completed: Bool) {
+    public override func presentationTransitionDidEnd(_ completed: Bool) {
         if !completed {
             dimView.removeFromSuperview()
         }
     }
     
-    override func dismissalTransitionWillBegin() {
+    public override func dismissalTransitionWillBegin() {
         guard let coord = presentingViewController.transitionCoordinator else {
             return
         }
@@ -106,13 +106,13 @@ public class PartialModalPresentationController: UIPresentationController {
         }, completion: nil)
     }
     
-    override func dismissalTransitionDidEnd(_ completed: Bool) {
+    public override func dismissalTransitionDidEnd(_ completed: Bool) {
         if completed {
             dimView.removeFromSuperview()
         }
     }
     
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         coordinator.animate(alongsideTransition: { _ in
             self.presentedViewController.view.frame = self.frameFromSize(size, style: self.activeModalStyle)
         }, completion: nil)
@@ -166,12 +166,12 @@ public class PartialModalPresentationController: UIPresentationController {
     }
 }
 
-protocol PartialModalPresentationDelegate: class {
+public protocol PartialModalPresentationDelegate: class {
     func partialModalPresentationDimViewTapped(controller: PartialModalPresentationController)
 }
 
-protocol PartialModalPresentable {}
-extension PartialModalPresentable where Self: UIViewController {
+public protocol PartialModalPresentable {}
+public extension PartialModalPresentable where Self: UIViewController {
     var partialModalPresentationController: PartialModalPresentationController? {
         return (navigationController?.presentationController as? PartialModalPresentationController) ?? (presentationController as? PartialModalPresentationController)
     }
